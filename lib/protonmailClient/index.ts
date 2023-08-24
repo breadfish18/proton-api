@@ -274,6 +274,8 @@ export class ProtonmailClient extends EventEmitter {
         }
 
         this.isloggedIn_ = true;
+
+        return authResponse;
     }
 
     public async logout(): Promise<{}> {

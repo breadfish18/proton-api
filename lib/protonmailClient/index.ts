@@ -11,11 +11,13 @@ import { EventEmitter } from "events";
 import { IBaseAPIResponse } from "./types";
 import { EventsRoutes } from "./events";
 import { SessionsRoutes } from "./sessions";
+import { HttpsProxyAgent } from "hpagent";
 
 export interface IProtonmailClientOptions {
     domain: string;
     rateLimit: boolean;
     userAgent: string;
+    proxy?: string
 }
 
 export declare interface ProtonmailClient {
@@ -113,6 +115,10 @@ export class ProtonmailClient extends EventEmitter {
             if (typeof options.rateLimit === "boolean") {
                 this.options.rateLimit = options.rateLimit;
             }
+
+            if (typeof options.proxy === "string") {
+                this.options.proxy = options.proxy;
+            }
         }
 
         this.axios = this.createAxiosInstance();
@@ -130,8 +136,7 @@ export class ProtonmailClient extends EventEmitter {
         const headers: any = {
             "Accept": "application/vnd.protonmail.v1+json",
             "User-Agent": this.options.userAgent,
-            "x-pm-apiversion": "3",
-            "x-pm-appversion": "Other",
+            "x-pm-appversion": "web-account@5.0.47.7",
         };
 
         if (typeof window !== "undefined") {
@@ -146,10 +151,16 @@ export class ProtonmailClient extends EventEmitter {
             headers.Authorization = `Bearer ${this.accessToken}`;
         }
 
+        let httpsAgent;
+        if (this.options.proxy) {
+            httpsAgent = new HttpsProxyAgent({ proxy: this.options.proxy })
+        }
+
         return axios.create({
             transformResponse,
             baseURL: `https://${this.options.domain}/api/`,
             headers,
+            httpsAgent,
             withCredentials: true,
         });
     }

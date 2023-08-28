@@ -1,6 +1,6 @@
 {
   "name": "@breadfish_18/proton-api",
-  "version": "1.0.11",
+  "version": "1.0.12",
   "description": "Unofficial API for ProtonMail. Works both in browser and Node.js",
   "keywords": [
     "protonmail",

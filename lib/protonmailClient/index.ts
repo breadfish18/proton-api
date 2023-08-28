@@ -136,7 +136,7 @@ export class ProtonmailClient extends EventEmitter {
         const headers: any = {
             "Accept": "application/vnd.protonmail.v1+json",
             "User-Agent": this.options.userAgent,
-            "x-pm-appversion": "web-account@5.0.47.7",
+            "x-pm-appversion": "Other",
         };
 
         if (typeof window !== "undefined") {
